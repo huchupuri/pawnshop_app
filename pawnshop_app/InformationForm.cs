@@ -79,7 +79,6 @@ namespace pawnshop_app
                 itemsGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 itemsGrid.ColumnHeadersHeight = 40;
                 itemsGrid.EnableHeadersVisualStyles = false;
-
                 itemsGrid.Columns.Add("Id", "ID");
                 itemsGrid.Columns.Add("Type", "Тип");
                 itemsGrid.Columns.Add("Description", "Описание");

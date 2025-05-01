@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -123,7 +125,50 @@ namespace pawnshop_app
             pawnshops.Clear();
             lenders.Clear();
             items.Clear();
+            MessageBox.Show($"{data.Items.Count}");
+            // Ломбарды
+            foreach (var pawnshop in data.Pawnshops)
+            {
+                pawnshops.Add(pawnshop);
+                var NewNode = new TreeNode($"{pawnshop.Name}");
+                PawnshopNode.Nodes.Add(NewNode);
+                if (pawnshop.Items != null)
+                {
+                    foreach (var lend in pawnshop.Items)
+                    {
+                        NewNode.Nodes.Add(new TreeNode($"{lend.Description}"));
+                    }
+                }
+            }
 
+            // Товары
+            foreach (var item in data.Items)
+            {
+                items.Add(item);
+                ItemNode.Nodes.Add(new TreeNode($"{item.Type}: {item.Description}"));
+            }
+
+            // Заемщики
+            foreach (var lender in data.Lenders)
+            {
+                lenders.Add(lender);
+                LendersNode.Nodes.Add(new TreeNode($"{lender.Name} ({lender.ContactInfo})"));
+            }
+
+            // Разворачиваем все узлы
+            treeView.ExpandAll();
+            treeView.Refresh(); // Обновляем TreeView
+        }
+        private void AddNodesToTreeView(RootJson data)
+        {
+            // Очищаем существующие узлы и списки
+            PawnshopNode.Nodes.Clear();
+            ItemNode.Nodes.Clear();
+            LendersNode.Nodes.Clear();
+            pawnshops.Clear();
+            lenders.Clear();
+            items.Clear();
+            MessageBox.Show($"{data.Items.Count}");
             // Ломбарды
             foreach (var pawnshop in data.Pawnshops)
             {
@@ -158,6 +203,24 @@ namespace pawnshop_app
             treeView.Refresh(); // Обновляем TreeView
         }
 
+        private RootJson LoadDataFromJson()
+        {
+            string jsonFilePath = "C:\\Users\\squae\\source\\repos\\pawnshop_app\\pawnshop_app\\information\\examplesJSON.json";
+
+
+            string json = File.ReadAllText(jsonFilePath);
+
+
+            try
+            {
+                return JsonSerializer.Deserialize<RootJson>(json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка десериализации JSON: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
         private Root LoadDataFromXml()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Root));
@@ -169,7 +232,11 @@ namespace pawnshop_app
         }
         private void Button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Функция удаления элемента", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var data = LoadDataFromJson();
+            if (data != null)
+            {
+                AddNodesToTreeView(data);
+            }
         }
 
 
@@ -179,16 +246,24 @@ namespace pawnshop_app
             [XmlArray("pawnshops")]
             [XmlArrayItem("pawnshop")]
             public List<Pawnshop> Pawnshops { get; set; }
-
             [XmlArray("items")]
             [XmlArrayItem("item")]
             public List<Item> Items { get; set; }
-
             [XmlArray("lenders")]
             [XmlArrayItem("lender")]
             public List<Lender> Lenders { get; set; }
         }
+        public class RootJson
+        {
+            [JsonPropertyName("pawnshops")]
+            public List<Pawnshop> Pawnshops { get; set; }
 
+            [JsonPropertyName("items")]
+            public List<Item> Items { get; set; }
+
+            [JsonPropertyName("lenders")]
+            public List<Lender> Lenders { get; set; } 
+        }
         private void CreateData(string dataType)
         {
             DataTable dataTable = new DataTable();
