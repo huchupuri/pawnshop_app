@@ -1,0 +1,154 @@
+{
+  "root": {
+    "pawnshops": [
+      {
+        "Id": 1,
+        "Name": "QuickCash Ломбард",
+        "Location": "Нью-Йорк, США",
+        "Rating": 4.5,
+        "Items": [
+          {
+            "Id": 1,
+            "Type": "ювелирные изделия",
+            "Description": "Золотое ожерелье с бриллиантами",
+            "EstimatedValue": 5000,
+            "Condition": "отличное"
+          },
+          {
+            "Id": 2,
+            "Type": "электроника",
+            "Description": "Новейшая модель ноутбука",
+            "EstimatedValue": 1200,
+            "Condition": "хорошее"
+          },
+          {
+            "Id": 3,
+            "Type": "часы",
+            "Description": "Роскошные швейцарские часы",
+            "EstimatedValue": 3000,
+            "Condition": "идеальное"
+          }
+        ],
+        "EstablishedYear": 2005
+      },
+      {
+        "Id": 2,
+        "Name": "Мастера Денег",
+        "Location": "Лос-Анджелес, США",
+        "Rating": 3.8,
+        "Items": [
+          {
+            "Id": 4,
+            "Type": "музыкальные инструменты",
+            "Description": "Акустическая гитара",
+            "EstimatedValue": 800,
+            "Condition": "удовлетворительное"
+          },
+          {
+            "Id": 5,
+            "Type": "антиквариат",
+            "Description": "Винтажная ваза XVIII века",
+            "EstimatedValue": 2500,
+            "Condition": "восстановленное"
+          }
+        ],
+        "EstablishedYear": 2010
+      },
+      {
+        "Id": 3,
+        "Name": "Золотой Сейф",
+        "Location": "Лондон, Великобритания",
+        "Rating": 4.7,
+        "EstablishedYear": 1998
+      },
+      {
+        "Id": 4,
+        "Name": "Серебряный Займ",
+        "Location": "Сидней, Австралия",
+        "Rating": 4.2,
+        "EstablishedYear": 2008
+      },
+      {
+        "Id": 5,
+        "Name": "Ювелирный Займ",
+        "Location": "Париж, Франция",
+        "Rating": 4.6,
+        "EstablishedYear": 2002
+      }
+    ],
+    "items": [
+      {
+        "Id": 1,
+        "Type": "ювелирные изделия",
+        "Description": "Золотое ожерелье с бриллиантами",
+        "EstimatedValue": 5000,
+        "Condition": "отличное"
+      },
+      {
+        "Id": 2,
+        "Type": "электроника",
+        "Description": "Новейшая модель ноутбука",
+        "EstimatedValue": 1200,
+        "Condition": "хорошее"
+      },
+      {
+        "Id": 3,
+        "Type": "часы",
+        "Description": "Роскошные швейцарские часы",
+        "EstimatedValue": 3000,
+        "Condition": "идеальное"
+      },
+      {
+        "Id": 4,
+        "Type": "музыкальные инструменты",
+        "Description": "Акустическая гитара",
+        "EstimatedValue": 800,
+        "Condition": "удовлетворительное"
+      },
+      {
+        "Id": 5,
+        "Type": "антиквариат",
+        "Description": "Винтажная ваза XVIII века",
+        "EstimatedValue": 2500,
+        "Condition": "восстановленное"
+      }
+    ],
+    "lenders": [
+      {
+        "Id": 1,
+        "Name": "Джон Доу",
+        "ContactInfo": "john.doe@example.com",
+        "LoanAmount": 1500,
+        "LoanStatus": "активный"
+      },
+      {
+        "Id": 2,
+        "Name": "Джейн Смит",
+        "ContactInfo": "jane.smith@example.com",
+        "LoanAmount": 3000,
+        "LoanStatus": "погашен"
+      },
+      {
+        "Id": 3,
+        "Name": "Майкл Браун",
+        "ContactInfo": "michael.brown@example.com",
+        "LoanAmount": 500,
+        "LoanStatus": "просрочен"
+      },
+      {
+        "Id": 4,
+        "Name": "Эмили Джонсон",
+        "ContactInfo": "emily.johnson@example.com",
+        "LoanAmount": 2000,
+        "LoanStatus": "активный"
+      },
+      {
+        "Id": 5,
+        "Name": "Дэвид Уилсон",
+        "ContactInfo": "david.wilson@example.com",
+        "LoanAmount": 1000,
+        "LoanStatus": "погашен"
+      }
+    ]
+  }
+}
