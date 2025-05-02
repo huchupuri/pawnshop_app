@@ -1,11 +1,7 @@
 ﻿using pawnshop_app.Classes;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace pawnshop_app
@@ -20,154 +16,74 @@ namespace pawnshop_app
             InitializeComponent();
             _selectedItem = selectedItem;
             _itemType = itemType;
-
-            this.Load += DetailForm_Load;
+            this.Load += PopulateDataGridView;
         }
 
-        private void DetailForm_Load(object sender, EventArgs e)
+
+        private void PopulateDataGridView(object sender, EventArgs e)
         {
-            PopulateFields();
-        }
-        private void PopulateFields()
-        {
-            flowLayoutPanel.Controls.Clear();
+            DataTable dataTable = new DataTable();
 
             switch (_itemType.ToLower())
             {
                 case "pawnshop":
-                    AddPawnshopFields((Pawnshop)_selectedItem);
+                    Pawnshop pawnshop = (Pawnshop)_selectedItem;
+                    dataTable.Columns.Add("Свойство", typeof(string));
+                    dataTable.Columns.Add("Значение", typeof(string));
+
+                    dataTable.Rows.Add("ID", pawnshop.Id);
+                    dataTable.Rows.Add("Название", pawnshop.Name);
+                    dataTable.Rows.Add("Адрес", pawnshop.Location);
+                    dataTable.Rows.Add("Рейтинг", pawnshop.Rating);
+                    dataTable.Rows.Add("Год основания", pawnshop.EstablishedYear);
+
+                    if (pawnshop.Items != null && pawnshop.Items.Count > 0)
+                    {
+                        dataTable.Rows.Add("ТОВАРЫ В ЛОМБАРДЕ", "");
+
+                        foreach (var Item in pawnshop.Items)
+                        {
+                            dataTable.Rows.Add($"Товар ID {Item.Id}", Item.Description);
+                            dataTable.Rows.Add("Тип", Item.Type);
+                            dataTable.Rows.Add("Стоимость", Item.EstimatedValue);
+                            dataTable.Rows.Add("Состояние", Item.Condition);
+                        }
+                    }
                     break;
+
                 case "item":
-                    AddItemFields((Item)_selectedItem);
+                    Item item = (Item)_selectedItem;
+
+                    dataTable.Columns.Add("Свойство", typeof(string));
+                    dataTable.Columns.Add("Значение", typeof(string));
+
+                    dataTable.Rows.Add("ID", item.Id);
+                    dataTable.Rows.Add("Тип", item.Type);
+                    dataTable.Rows.Add("Описание", item.Description);
+                    dataTable.Rows.Add("Оценочная стоимость", item.EstimatedValue);
+                    dataTable.Rows.Add("Состояние", item.Condition);
                     break;
+
                 case "lender":
-                    AddLenderFields((Lender)_selectedItem);
+                    Lender lender = (Lender)_selectedItem;
+
+                    dataTable.Columns.Add("Свойство", typeof(string));
+                    dataTable.Columns.Add("Значение", typeof(string));
+
+                    dataTable.Rows.Add("ID", lender.Id);
+                    dataTable.Rows.Add("Имя", lender.Name);
+                    dataTable.Rows.Add("Контактная информация", lender.ContactInfo);
+                    dataTable.Rows.Add("Сумма займа", lender.LoanAmount);
+                    dataTable.Rows.Add("Статус займа", lender.LoanStatus);
                     break;
             }
-        }
 
-        private void AddPawnshopFields(Pawnshop pawnshop)
-        {
-            AddField("ID", pawnshop.Id.ToString());
-            AddField("Название", pawnshop.Name);
-            AddField("Адрес", pawnshop.Location);
-            AddField("Рейтинг", pawnshop.Rating.ToString());
-            AddField("Год основания", pawnshop.EstablishedYear.ToString());
+            dataGridView1.DataSource = dataTable;
 
-            // Добавляем информацию о товарах в этом ломбарде
-            if (pawnshop.Items != null && pawnshop.Items.Count > 0)
+            if (dataGridView1.Columns.Count > 0)
             {
-                AddSeparator("Товары в ломбарде");
-
-                DataGridView itemsGrid = new DataGridView
-                {
-                    Width = flowLayoutPanel.Width - 20,
-                    Height = 150,
-                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                    ReadOnly = true,
-                    AllowUserToAddRows = false,
-                    AllowUserToDeleteRows = false,
-                    RowHeadersVisible = false,
-                    BackgroundColor = Color.White,
-                    BorderStyle = BorderStyle.None,
-                    CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
-                    GridColor = Color.FromArgb(230, 230, 230),
-                    Margin = new Padding(10, 5, 10, 10)
-                };
-
-                itemsGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94);
-                itemsGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                itemsGrid.ColumnHeadersHeight = 40;
-                itemsGrid.EnableHeadersVisualStyles = false;
-                itemsGrid.Columns.Add("Id", "ID");
-                itemsGrid.Columns.Add("Type", "Тип");
-                itemsGrid.Columns.Add("Description", "Описание");
-                itemsGrid.Columns.Add("Value", "Стоимость");
-                itemsGrid.Columns.Add("Condition", "Состояние");
-
-                foreach (var item in pawnshop.Items)
-                {
-                    itemsGrid.Rows.Add(
-                        item.Id,
-                        item.Type,
-                        item.Description,
-                        item.EstimatedValue,
-                        item.Condition
-                    );
-                }
-
-                flowLayoutPanel.Controls.Add(itemsGrid);
+                dataGridView1.Columns[0].Width = 200;
             }
-        }
-
-        private void AddItemFields(Item item)
-        {
-            AddField("ID", item.Id.ToString());
-            AddField("Тип", item.Type);
-            AddField("Описание", item.Description);
-            AddField("Оценочная стоимость", item.EstimatedValue.ToString());
-            AddField("Состояние", item.Condition);
-        }
-
-        private void AddLenderFields(Lender lender)
-        {
-            AddField("ID", lender.Id.ToString());
-            AddField("Имя", lender.Name);
-            AddField("Контактная информация", lender.ContactInfo);
-            AddField("Сумма займа", lender.LoanAmount.ToString());
-            AddField("Статус займа", lender.LoanStatus);
-        }
-
-        private void AddField(string labelText, string value)
-        {
-            // Создаем панель для поля
-            Panel fieldPanel = new Panel
-            {
-                Width = flowLayoutPanel.Width - 20,
-                Height = 60,
-                Margin = new Padding(10, 5, 10, 5)
-            };
-
-            // Добавляем метку
-            Label label = new Label
-            {
-                Text = labelText,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(52, 73, 94),
-                Location = new Point(0, 0),
-                AutoSize = true
-            };
-
-            // Добавляем значение
-            Label valueLabel = new Label
-            {
-                Text = value,
-                Width = fieldPanel.Width - 10,
-                Location = new Point(0, 25),
-                Font = new Font("Segoe UI", 10F),
-                AutoEllipsis = true
-            };
-
-            fieldPanel.Controls.Add(label);
-            fieldPanel.Controls.Add(valueLabel);
-            flowLayoutPanel.Controls.Add(fieldPanel);
-        }
-
-        private void AddSeparator(string title)
-        {
-            Label separator = new Label
-            {
-                Text = title,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(52, 73, 94),
-                Width = flowLayoutPanel.Width - 20,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(10, 15, 10, 5),
-                BorderStyle = BorderStyle.None
-            };
-
-            flowLayoutPanel.Controls.Add(separator);
         }
     }
 }

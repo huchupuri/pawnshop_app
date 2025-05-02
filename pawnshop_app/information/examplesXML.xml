@@ -6,6 +6,183 @@
       <Name>QuickCash Ломбард</Name>
       <Location>Нью-Йорк, США</Location>
       <Rating>4.5</Rating>
+      <EstablishedYear>2005</EstablishedYear>
+
+      <Items>
+        <Item>
+          <Id>1</Id>
+          <Type>ювелирные изделия</Type>
+          <Description>золотое ожерелье с бриллиантами</Description>
+          <EstimatedValue>5000</EstimatedValue>
+          <Condition>отличное</Condition>
+        </Item>
+        <Item>
+          <Id>2</Id>
+          <Type>электроника</Type>
+          <Description>Новейшая модель ноутбука</Description>
+          <EstimatedValue>1200</EstimatedValue>
+          <Condition>хорошее</Condition>
+        </Item>
+      </Items>
+
+      <Lenders>
+        <Lender>
+          <Id>1</Id>
+          <Name>Джон Доу</Name>
+          <ContactInfo>john.doe@example.com</ContactInfo>
+          <LoanAmount>1500</LoanAmount>
+          <LoanStatus>активный</LoanStatus>
+        </Lender>
+      </Lenders>
+    </pawnshop>
+
+    <pawnshop>
+      <Id>2</Id>
+      <Name>Мастера Денег</Name>
+      <Location>Лос-Анджелес, США</Location>
+      <Rating>3.8</Rating>
+      <EstablishedYear>2010</EstablishedYear>
+
+      <Items>
+        <Item>
+          <Id>3</Id>
+          <Type>музыкальные инструменты</Type>
+          <Description>Акустическая гитара</Description>
+          <EstimatedValue>800</EstimatedValue>
+          <Condition>удовлетворительное</Condition>
+        </Item>
+      </Items>
+
+      <Lenders>
+        <Lender>
+          <Id>2</Id>
+          <Name>Джейн Смит</Name>
+          <ContactInfo>jane.smith@example.com</ContactInfo>
+          <LoanAmount>3000</LoanAmount>
+          <LoanStatus>погашен</LoanStatus>
+        </Lender>
+      </Lenders>
+    </pawnshop>
+  </pawnshops>
+
+  <items>
+    <item>
+      <Id>1</Id>
+      <Type>ювелирные изделия</Type>
+      <Description>золотое ожерелье с бриллиантами</Description>
+      <EstimatedValue>5000</EstimatedValue>
+      <Condition>отличное</Condition>
+
+      <Lenders>
+        <Lender>
+          <Id>1</Id>
+          <Name>Джон Доу</Name>
+          <ContactInfo>john.doe@example.com</ContactInfo>
+          <LoanAmount>1500</LoanAmount>
+          <LoanStatus>активный</LoanStatus>
+        </Lender>
+      </Lenders>
+
+      <Pawnshops>
+        <Pawnshop>
+          <Id>1</Id>
+          <Name>QuickCash Ломбард</Name>
+          <Location>Нью-Йорк, США</Location>
+          <Rating>4.5</Rating>
+          <EstablishedYear>2005</EstablishedYear>
+
+          <Items>
+            <Item>
+              <Id>1</Id>
+              <Type>ювелирные изделия</Type>
+              <Description>Золотое ожерелье с бриллиантами</Description>
+              <EstimatedValue>5000</EstimatedValue>
+              <Condition>отличное</Condition>
+            </Item>
+            <Item>
+              <Id>2</Id>
+              <Type>электроника</Type>
+              <Description>Новейшая модель ноутбука</Description>
+              <EstimatedValue>1200</EstimatedValue>
+              <Condition>хорошее</Condition>
+            </Item>
+          </Items>
+
+          <Lenders>
+            <Lender>
+              <Id>1</Id>
+              <Name>Джон Доу</Name>
+              <ContactInfo>john.doe@example.com</ContactInfo>
+              <LoanAmount>1500</LoanAmount>
+              <LoanStatus>активный</LoanStatus>
+            </Lender>
+          </Lenders>
+        </Pawnshop>
+      </Pawnshops>
+    </item>
+
+    <item>
+      <Id>2</Id>
+      <Type>электроника</Type>
+      <Description>Новейшая модель ноутбука</Description>
+      <EstimatedValue>1200</EstimatedValue>
+      <Condition>хорошее</Condition>
+
+      <Lenders>
+        <Lender>
+          <Id>1</Id>
+          <Name>Джон Доу</Name>
+          <ContactInfo>john.doe@example.com</ContactInfo>
+          <LoanAmount>1500</LoanAmount>
+          <LoanStatus>активный</LoanStatus>
+        </Lender>
+      </Lenders>
+
+      <Pawnshops>
+        <Pawnshop>
+          <Id>1</Id>
+          <Name>QuickCash Ломбард</Name>
+          <Location>Нью-Йорк, США</Location>
+          <Rating>4.5</Rating>
+          <EstablishedYear>2005</EstablishedYear>
+        </Pawnshop>
+      </Pawnshops>
+    </item>
+
+    <item>
+      <Id>3</Id>
+      <Type>музыкальные инструменты</Type>
+      <Description>Акустическая гитара</Description>
+      <EstimatedValue>800</EstimatedValue>
+      <Condition>удовлетворительное</Condition>
+
+      <Lenders>
+        <Lender>
+          <Id>2</Id>
+          <Name>Джейн Смит</Name>
+          <ContactInfo>jane.smith@example.com</ContactInfo>
+          <LoanAmount>3000</LoanAmount>
+          <LoanStatus>погашен</LoanStatus>
+        </Lender>
+      </Lenders>
+
+      <Pawnshops>
+        <Pawnshop>
+          <Id>2</Id>
+          <Name>Мастера Денег</Name>
+        </Pawnshop>
+      </Pawnshops>
+    </item>
+  </items>
+
+  <lenders>
+    <lender>
+      <Id>1</Id>
+      <Name>Джон Доу</Name>
+      <ContactInfo>john.doe@example.com</ContactInfo>
+      <LoanAmount>1500</LoanAmount>
+      <LoanStatus>активный</LoanStatus>
+
       <Items>
         <Item>
           <Id>1</Id>
@@ -21,136 +198,39 @@
           <EstimatedValue>1200</EstimatedValue>
           <Condition>хорошее</Condition>
         </Item>
-        <Item>
-          <Id>3</Id>
-          <Type>часы</Type>
-          <Description>Роскошные швейцарские часы</Description>
-          <EstimatedValue>3000</EstimatedValue>
-          <Condition>идеальное</Condition>
-        </Item>
       </Items>
-      <EstablishedYear>2005</EstablishedYear>
-    </pawnshop>
-    <pawnshop>
-      <Id>2</Id>
-      <Name>Мастера Денег</Name>
-      <Location>Лос-Анджелес, США</Location>
-      <Rating>3.8</Rating>
-      <Items>
-        <Item>
-          <Id>4</Id>
-          <Type>музыкальные инструменты</Type>
-          <Description>Акустическая гитара</Description>
-          <EstimatedValue>800</EstimatedValue>
-          <Condition>удовлетворительное</Condition>
-        </Item>
-        <Item>
-          <Id>5</Id>
-          <Type>антиквариат</Type>
-          <Description>Винтажная ваза XVIII века</Description>
-          <EstimatedValue>2500</EstimatedValue>
-          <Condition>восстановленное</Condition>
-        </Item>
-      </Items>
-      <EstablishedYear>2010</EstablishedYear>
-    </pawnshop>
-    <pawnshop>
-      <Id>3</Id>
-      <Name>Золотой Сейф</Name>
-      <Location>Лондон, Великобритания</Location>
-      <Rating>4.7</Rating>
-      <EstablishedYear>1998</EstablishedYear>
-    </pawnshop>
-    <pawnshop>
-      <Id>4</Id>
-      <Name>Серебряный Займ</Name>
-      <Location>Сидней, Австралия</Location>
-      <Rating>4.2</Rating>
-      <EstablishedYear>2008</EstablishedYear>
-    </pawnshop>
-    <pawnshop>
-      <Id>5</Id>
-      <Name>Ювелирный Займ</Name>
-      <Location>Париж, Франция</Location>
-      <Rating>4.6</Rating>
-      <EstablishedYear>2002</EstablishedYear>
-    </pawnshop>
-  </pawnshops>
-  <items>
-    <item>
-      <Id>1</Id>
-      <Type>ювелирные изделия</Type>
-      <Description>Золотое ожерелье с бриллиантами</Description>
-      <EstimatedValue>5000</EstimatedValue>
-      <Condition>отличное</Condition>
-    </item>
-    <item>
-      <Id>2</Id>
-      <Type>электроника</Type>
-      <Description>Новейшая модель ноутбука</Description>
-      <EstimatedValue>1200</EstimatedValue>
-      <Condition>хорошее</Condition>
-    </item>
-    <item>
-      <Id>3</Id>
-      <Type>часы</Type>
-      <Description>Роскошные швейцарские часы</Description>
-      <EstimatedValue>3000</EstimatedValue>
-      <Condition>идеальное</Condition>
-    </item>
-    <item>
-      <Id>4</Id>
-      <Type>музыкальные инструменты</Type>
-      <Description>Акустическая гитара</Description>
-      <EstimatedValue>800</EstimatedValue>
-      <Condition>удовлетворительное</Condition>
-    </item>
-    <item>
-      <Id>5</Id>
-      <Type>антиквариат</Type>
-      <Description>Винтажная ваза XVIII века</Description>
-      <EstimatedValue>2500</EstimatedValue>
-      <Condition>восстановленное</Condition>
-    </item>
-  </items>
-  <lenders>
-    <lender>
-      <Id>1</Id>
-      <Name>Джон Доу</Name>
-      <ContactInfo>john.doe@example.com</ContactInfo>
-      <LoanAmount>1500</LoanAmount>
-      <LoanStatus>активный</LoanStatus>
+
+      <Pawnshops>
+        <Pawnshop>
+          <Id>1</Id>
+          <Name>QuickCash Ломбард</Name>
+        </Pawnshop>
+      </Pawnshops>
     </lender>
+
     <lender>
       <Id>2</Id>
       <Name>Джейн Смит</Name>
       <ContactInfo>jane.smith@example.com</ContactInfo>
       <LoanAmount>3000</LoanAmount>
       <LoanStatus>погашен</LoanStatus>
-    </lender>
-    <lender>
-      <Id>3</Id>
-      <Name>Майкл Браун</Name>
-      <ContactInfo>michael.brown@example.com</ContactInfo>
-      <LoanAmount>500</LoanAmount>
-      <LoanStatus>просрочен</LoanStatus>
-    </lender>
-    <lender>
-      <Id>4</Id>
-      <Name>Эмили Джонсон</Name>
-      <ContactInfo>emily.johnson@example.com</ContactInfo>
-      <LoanAmount>2000</LoanAmount>
-      <LoanStatus>активный</LoanStatus>
-    </lender>
-    <lender>
-      <Id>5</Id>
-      <Name>Дэвид Уилсон</Name>
-      <ContactInfo>david.wilson@example.com</ContactInfo>
-      <LoanAmount>1000</LoanAmount>
-      <LoanStatus>погашен</LoanStatus>
+
+      <Items>
+        <Item>
+          <Id>3</Id>
+          <Type>музыкальные инструменты</Type>
+          <Description>Акустическая гитара</Description>
+          <EstimatedValue>800</EstimatedValue>
+          <Condition>удовлетворительное</Condition>
+        </Item>
+      </Items>
+
+      <Pawnshops>
+        <Pawnshop>
+          <Id>2</Id>
+          <Name>Мастера Денег</Name>
+        </Pawnshop>
+      </Pawnshops>
     </lender>
   </lenders>
-
-
-
 </root>

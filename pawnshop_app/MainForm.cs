@@ -4,38 +4,50 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using System.Xml.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace pawnshop_app
 {
     public partial class MainForm : Form
     {
-        TreeNode PawnshopNode = new TreeNode("Ломбарды");
-        TreeNode ItemNode = new TreeNode("Товар");
-        TreeNode LendersNode = new TreeNode("Заемщики");
-        private string xmlFilePath = "C:\\Users\\squae\\source\\repos\\pawnshop_app\\pawnshop_app\\information\\examplesXML.xml";
+        private TreeNode PawnshopNode = new TreeNode("Ломбарды");
+        private TreeNode ItemNode = new TreeNode("Товар");
+        private TreeNode LendersNode = new TreeNode("Заемщики");
+
+        // Пути к файлам
+        private string xmlFilePath = "information\\examplesXML.xml";
+        private string jsonFilePath = "information\\examplesJSON.json";
+        private List<Pawnshop> pawnshops = new List<Pawnshop>();
+        private List<Item> items = new List<Item>();
+        private List<Lender> lenders = new List<Lender>();
+
         public MainForm()
         {
             InitializeComponent();
             LoadTreeViewData();
-
         }
+
+        private void LoadTreeViewData()
+        {
+            treeView.Nodes.Clear();
+            treeView.Nodes.Add(PawnshopNode);
+            treeView.Nodes.Add(ItemNode);
+            treeView.Nodes.Add(LendersNode);
+            treeView.ExpandAll();
+        }
+
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            // Проверяем, является ли выбранный узел родительским
-            if (e.Node.Parent == null) // Только корневые узлы
+            if (e.Node.Parent == null) 
             {
-                string selectedNodeText = e.Node.Text.ToLower();
-
-                switch (selectedNodeText)
+                switch (e.Node.Text.ToLower())
                 {
                     case "ломбарды":
                         CreateData("ломбарды");
@@ -50,177 +62,71 @@ namespace pawnshop_app
             }
             else
             {
-                // Если узел не родительский, показываем форму с деталями
                 ShowDetailForm(e.Node);
             }
         }
 
         private void ShowDetailForm(TreeNode node)
         {
-            // Определяем тип объекта и находим соответствующий объект
-            string nodeText = node.Text;
             object selectedObject = null;
             string objectType = "";
 
             if (node.Parent == PawnshopNode)
             {
-                // Это ломбард
-                selectedObject = pawnshops.FirstOrDefault(p => p.Name == nodeText);
+                selectedObject = pawnshops.FirstOrDefault(p => p.Name == node.Text);
                 objectType = "pawnshop";
             }
             else if (node.Parent == ItemNode)
             {
-                // Это товар - извлекаем тип и описание из текста узла
-                string[] parts = nodeText.Split(new string[] { ": " }, StringSplitOptions.None);
-                if (parts.Length == 2)
-                {
-                    string type = parts[0];
-                    string description = parts[1];
-                    selectedObject = items.FirstOrDefault(i => i.Type == type && i.Description == description);
-                    objectType = "item";
-                }
+                selectedObject = items.FirstOrDefault(i => i.Type == node.Text);
+                objectType = "item";
             }
             else if (node.Parent == LendersNode)
             {
-                // Это заемщик - извлекаем имя из текста узла
-                string name = nodeText.Split(new string[] { " (" }, StringSplitOptions.None)[0];
-                selectedObject = lenders.FirstOrDefault(l => l.Name == name);
+                
+                selectedObject = lenders.FirstOrDefault(l => l.Name == node.Text);
                 objectType = "lender";
             }
+            else
+            {
+                if (pawnshops.FirstOrDefault(p => p.Name == node.Text) != null)
+                {
+                    selectedObject = pawnshops.FirstOrDefault(p => p.Name == node.Text);
+                    objectType = "pawnshop";
+                }
+                else if (items.FirstOrDefault(i => i.Type == node.Text) != null)
+                {
+                    selectedObject = items.FirstOrDefault(i => i.Type == node.Text);
+                    objectType = "item";
+                }
+                else if (lenders.FirstOrDefault(l => l.Name == node.Text) != null)
+                {
+                    selectedObject = lenders.FirstOrDefault(l => l.Name == node.Text);
+                    objectType = "lender";
+                }
 
-            // Если объект найден, показываем форму с деталями
+            }
+
             if (selectedObject != null)
             {
-                using (DetailForm detailForm = new DetailForm(selectedObject, objectType))
+                using (var detailForm = new DetailForm(selectedObject, objectType))
                 {
                     detailForm.ShowDialog();
                 }
             }
         }
-
         private void Load_Click(object sender, EventArgs e)
         {
             var data = LoadDataFromXml();
             AddNodesToTreeView(data);
-
         }
-        private void LoadTreeViewData()
+
+        private void Button2_Click(object sender, EventArgs e)
         {
-            treeView.Nodes.Add(ItemNode);
-            treeView.Nodes.Add(PawnshopNode);
-            treeView.Nodes.Add(LendersNode);
-
-            // Разворачиваем все узлы
-            treeView.ExpandAll();
-        }
-        List<Pawnshop> pawnshops = new List<Pawnshop>();
-        List<Lender> lenders = new List<Lender>();
-        List<Item> items = new List<Item>();
-        private void AddNodesToTreeView(Root data)
-        {
-            // Очищаем существующие узлы и списки
-            PawnshopNode.Nodes.Clear();
-            ItemNode.Nodes.Clear();
-            LendersNode.Nodes.Clear();
-            pawnshops.Clear();
-            lenders.Clear();
-            items.Clear();
-            MessageBox.Show($"{data.Items.Count}");
-            // Ломбарды
-            foreach (var pawnshop in data.Pawnshops)
-            {
-                pawnshops.Add(pawnshop);
-                var NewNode = new TreeNode($"{pawnshop.Name}");
-                PawnshopNode.Nodes.Add(NewNode);
-                if (pawnshop.Items != null)
-                {
-                    foreach (var lend in pawnshop.Items)
-                    {
-                        NewNode.Nodes.Add(new TreeNode($"{lend.Description}"));
-                    }
-                }
-            }
-
-            // Товары
-            foreach (var item in data.Items)
-            {
-                items.Add(item);
-                ItemNode.Nodes.Add(new TreeNode($"{item.Type}: {item.Description}"));
-            }
-
-            // Заемщики
-            foreach (var lender in data.Lenders)
-            {
-                lenders.Add(lender);
-                LendersNode.Nodes.Add(new TreeNode($"{lender.Name} ({lender.ContactInfo})"));
-            }
-
-            // Разворачиваем все узлы
-            treeView.ExpandAll();
-            treeView.Refresh(); // Обновляем TreeView
-        }
-        private void AddNodesToTreeView(RootJson data)
-        {
-            // Очищаем существующие узлы и списки
-            PawnshopNode.Nodes.Clear();
-            ItemNode.Nodes.Clear();
-            LendersNode.Nodes.Clear();
-            pawnshops.Clear();
-            lenders.Clear();
-            items.Clear();
-            MessageBox.Show($"{data.Items.Count}");
-            // Ломбарды
-            foreach (var pawnshop in data.Pawnshops)
-            {
-                pawnshops.Add(pawnshop);
-                var NewNode = new TreeNode($"{pawnshop.Name}");
-                PawnshopNode.Nodes.Add(NewNode);
-                if (pawnshop.Items != null)
-                {
-                    foreach (var lend in pawnshop.Items)
-                    {
-                        NewNode.Nodes.Add(new TreeNode($"{lend.Description}"));
-                    }
-                }
-            }
-
-            // Товары
-            foreach (var item in data.Items)
-            {
-                items.Add(item);
-                ItemNode.Nodes.Add(new TreeNode($"{item.Type}: {item.Description}"));
-            }
-
-            // Заемщики
-            foreach (var lender in data.Lenders)
-            {
-                lenders.Add(lender);
-                LendersNode.Nodes.Add(new TreeNode($"{lender.Name} ({lender.ContactInfo})"));
-            }
-
-            // Разворачиваем все узлы
-            treeView.ExpandAll();
-            treeView.Refresh(); // Обновляем TreeView
+            var data = LoadDataFromJson();
+            AddNodesToTreeView(data);
         }
 
-        private RootJson LoadDataFromJson()
-        {
-            string jsonFilePath = "C:\\Users\\squae\\source\\repos\\pawnshop_app\\pawnshop_app\\information\\examplesJSON.json";
-
-
-            string json = File.ReadAllText(jsonFilePath);
-
-
-            try
-            {
-                return JsonSerializer.Deserialize<RootJson>(json);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка десериализации JSON: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-        }
         private Root LoadDataFromXml()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Root));
@@ -230,30 +136,24 @@ namespace pawnshop_app
                 return (Root)serializer.Deserialize(reader);
             }
         }
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            var data = LoadDataFromJson();
-            if (data != null)
-            {
-                AddNodesToTreeView(data);
-            }
-        }
-
-
+        // Classes/Root.cs
         [XmlRoot("root")]
         public class Root
         {
-            [XmlArray("pawnshops")]
-            [XmlArrayItem("pawnshop")]
+            [JsonPropertyName("pawnshops")]
+            [XmlArray("pawnshops"), XmlArrayItem("pawnshop")]
             public List<Pawnshop> Pawnshops { get; set; }
-            [XmlArray("items")]
-            [XmlArrayItem("item")]
+
+            [JsonPropertyName("items")]
+            [XmlArray("items"), XmlArrayItem("item")]
             public List<Item> Items { get; set; }
-            [XmlArray("lenders")]
-            [XmlArrayItem("lender")]
+
+            [JsonPropertyName("lenders")]
+            [XmlArray("lenders"), XmlArrayItem("lender")]
             public List<Lender> Lenders { get; set; }
         }
-        public class RootJson
+
+        public class RootData
         {
             [JsonPropertyName("pawnshops")]
             public List<Pawnshop> Pawnshops { get; set; }
@@ -262,8 +162,73 @@ namespace pawnshop_app
             public List<Item> Items { get; set; }
 
             [JsonPropertyName("lenders")]
-            public List<Lender> Lenders { get; set; } 
+            public List<Lender> Lenders { get; set; }
         }
+        private Root LoadDataFromJson()
+        {
+            string json = File.ReadAllText(jsonFilePath);
+            return JsonSerializer.Deserialize<Root>(json);
+        }
+
+        private void AddNodesToTreeView(Root root)
+        {
+
+            foreach (var pawnshop in root.Pawnshops)
+            {
+                pawnshops.Add(pawnshop);
+                var node = new TreeNode(pawnshop.Name);
+                PawnshopNode.Nodes.Add(node);
+
+                foreach (var item in pawnshop.Items)
+                {
+                    items.Add(item);
+                    node.Nodes.Add(new TreeNode(item.Description));
+                }
+                foreach (Lender lender in pawnshop.Lenders)
+                {
+                    lenders.Add(lender);
+                    node.Nodes.Add(new TreeNode(lender.Name));
+                }
+            }
+
+            foreach (var item in root.Items)
+            {
+                items.Add(item);
+                var node = new TreeNode(item.Type);
+                ItemNode.Nodes.Add(node);
+                foreach (var pawnshop in item.Pawnshops)
+                {
+                    pawnshops.Add(pawnshop);
+                    node.Nodes.Add(new TreeNode(pawnshop.Name));
+                }
+                foreach (Lender lender in item.Lenders)
+                {
+                    lenders.Add(lender);
+                    node.Nodes.Add(new TreeNode(lender.Name));
+                }
+            }
+
+            foreach (var lender in root.Lenders)
+            {
+                lenders.Add(lender);
+                var node = new TreeNode($"{lender.Name}");
+                LendersNode.Nodes.Add(node);
+                foreach (var pawnshop in lender.Pawnshops)
+                {
+                    pawnshops.Add(pawnshop);
+                    node.Nodes.Add(new TreeNode(pawnshop.Name));
+                }
+                foreach (var item in lender.Items)
+                {
+                    items.Add(item);
+                    node.Nodes.Add(new TreeNode(item.Type));
+                }
+            }
+
+            treeView.ExpandAll();
+        }
+
+
         private void CreateData(string dataType)
         {
             DataTable dataTable = new DataTable();
@@ -310,7 +275,7 @@ namespace pawnshop_app
                     break;
 
                 default:
-                    MessageBox.Show("Неизвестный тип данных");
+                    MessageBox.Show("Неизвестный тип данных.");
                     return;
             }
 
