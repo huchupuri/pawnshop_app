@@ -136,34 +136,6 @@ namespace pawnshop_app
                 return (Root)serializer.Deserialize(reader);
             }
         }
-        // Classes/Root.cs
-        [XmlRoot("root")]
-        public class Root
-        {
-            [JsonPropertyName("pawnshops")]
-            [XmlArray("pawnshops"), XmlArrayItem("pawnshop")]
-            public List<Pawnshop> Pawnshops { get; set; }
-
-            [JsonPropertyName("items")]
-            [XmlArray("items"), XmlArrayItem("item")]
-            public List<Item> Items { get; set; }
-
-            [JsonPropertyName("lenders")]
-            [XmlArray("lenders"), XmlArrayItem("lender")]
-            public List<Lender> Lenders { get; set; }
-        }
-
-        public class RootData
-        {
-            [JsonPropertyName("pawnshops")]
-            public List<Pawnshop> Pawnshops { get; set; }
-
-            [JsonPropertyName("items")]
-            public List<Item> Items { get; set; }
-
-            [JsonPropertyName("lenders")]
-            public List<Lender> Lenders { get; set; }
-        }
         private Root LoadDataFromJson()
         {
             string json = File.ReadAllText(jsonFilePath);
